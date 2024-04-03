@@ -38,8 +38,10 @@ const createCustomEthOrder = async () => {
     const EthTickerInfo = await Bybit.fetchTicker("ETH/USDT");
     if (!EthTickerInfo) throw new Error("Failed to fetch ETH ticker info");
     const EthLTP = EthTickerInfo.last;
+    console.log("ETH LTP:", EthLTP);
     if (!EthLTP) throw new Error("Failed to fetch ETH LTP");
     const order_price = EthLTP * 0.99; // 0.99 i.e 99 % of LTP or 1% less than LTP
+    console.log("Order Price:", order_price);
     const order = await Bybit.createOrder(
       "ETH/USDT",
       "limit",
@@ -49,6 +51,7 @@ const createCustomEthOrder = async () => {
     );
 
     if (!order) throw new Error("Failed to create order");
+
     // check if order is created successfully and if order is created successfully then cancel that order after 10 sec
     setTimeout(async () => {
       try {
@@ -58,7 +61,6 @@ const createCustomEthOrder = async () => {
         console.error("Failed to cancel order:", error.message);
       }
     }, 10000);
-    console.log(order);
     return order;
   } catch (error) {
     console.log(error);
@@ -66,12 +68,12 @@ const createCustomEthOrder = async () => {
   }
 };
 
-// const main = async () => {
-//   const balance = await getBalance();
-//   console.log("Balance:", balance);
-//   const tickerInfo = await getTickerInfo("BTC/USDT");
-//   console.log("BTC/USDT Ticker Info:", tickerInfo);
-//   const order = await createCustomEthOrder();
-//   console.log("Order:", order);
-// };
-// main();
+const main = async () => {
+  const balance = await getBalance();
+  console.log("Balance:", balance);
+  const tickerInfo = await getTickerInfo("ETH/USDT");
+  console.log("ETH/USDT Ticker Info:", tickerInfo);
+  const order = await createCustomEthOrder();
+  console.log("Order:", order);
+};
+main();
