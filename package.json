@@ -4,9 +4,10 @@
   "description": "Bybit Bot",
   "main": "server.ts",
   "scripts": {
-    "start": "cd build && node index.js",
+    "start": "cd build && node server.js",
     "dev": "nodemon server.ts",
-    "build": "tsc"
+    "prestart": "npm run build",
+    "build": "cp .env build/.env && tsc"
   },
   "author": "Bipin Thapa",
   "license": "ISC",

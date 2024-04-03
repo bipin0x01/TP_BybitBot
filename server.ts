@@ -2,6 +2,8 @@ import ccxt from "ccxt";
 import dotenv from "dotenv";
 dotenv.config();
 // env variables
+
+console.log("Bybit API Key:", process.env.BYBIT_API_KEY);
 const BYBIT_API_KEY = process.env.BYBIT_API_KEY;
 const BYBIT_SECRET = process.env.BYBIT_API_SECRET;
 
@@ -19,7 +21,7 @@ const getBalance = async () => {
     return balance;
   } catch (error) {
     console.log(error);
-    return;
+    return null;
   }
 };
 
@@ -29,7 +31,7 @@ const getTickerInfo = async (ticker: string) => {
     return tickerInfo;
   } catch (error) {
     console.log(error);
-    return;
+    return null;
   }
 };
 
@@ -64,7 +66,7 @@ const createCustomEthOrder = async () => {
     return order;
   } catch (error) {
     console.log(error);
-    return;
+    return null;
   }
 };
 
