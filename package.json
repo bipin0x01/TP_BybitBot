@@ -1,0 +1,24 @@
+{
+  "name": "bybit-bot",
+  "version": "0.0.1",
+  "description": "Bybit Bot",
+  "main": "server.ts",
+  "scripts": {
+    "start": "cd build && node index.js",
+    "dev": "nodemon server.ts",
+    "build": "tsc"
+  },
+  "author": "Bipin Thapa",
+  "license": "ISC",
+  "dependencies": {
+    "ccxt": "^4.2.88",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.3",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.3.2"
+  }
+}
