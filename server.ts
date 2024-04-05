@@ -69,13 +69,44 @@ const createCustomEthOrder = async () => {
     return null;
   }
 };
+const createRandomOrder = async (basePrice: number) => {
+  // Generate a random order side: buy or sell
+  const randomOrderSide = Math.random() > 0.5 ? "buy" : "sell";
+
+  // Calculate a random spread between -0.05 (-5%) and 0.05 (5%) of the LTP
+  const spread = Math.random() * 0.1 - 0.05; // Spread from -5% to +5%
+
+  // Adjust the price by the spread
+  const price = basePrice * (1 + spread);
+
+  // Place the order with a fixed amount for simplicity, could also be randomized
+  await Bybit.createOrder("DOT/USDT", "limit", randomOrderSide, 0.001, price);
+
+  console.log(`Created ${randomOrderSide} order at price: ${price}`);
+};
 
 const main = async () => {
-  const balance = await getBalance();
-  console.log("Balance:", balance);
-  const tickerInfo = await getTickerInfo("ETH/USDT");
-  console.log("ETH/USDT Ticker Info:", tickerInfo);
-  const order = await createCustomEthOrder();
-  console.log("Order:", order);
+  console.log(await getBalance());
+  const tickerInfo = await getTickerInfo("DOT/USDT");
+
+  // Assuming getTickerInfo returns an object with a 'last' property for the last price
+  let lastPrice = tickerInfo?.last;
+
+  // Create a random order based on the last traded price
+  await createRandomOrder(lastPrice);
+
+  // Wait for 20 seconds before placing another order
+  await new Promise((resolve) => setTimeout(resolve, 20000));
+
+  // Get updated ticker info in case the price has changed
+  const updatedTickerInfo = await getTickerInfo("DOT/USDT");
+  lastPrice = updatedTickerInfo?.last;
+
+  // Create another random order based on the updated last traded price
+  await createRandomOrder(lastPrice);
 };
-main();
+
+// Run the main function in a loop with a 6-second interval
+setInterval(() => {
+  main().catch(console.error); // Catch and log any errors
+}, 60000); // Adjusted to 60 seconds for practicality
